@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  nextjs:
+    build: .
+    container_name: nextjs_app
+    ports:
+      - "3402:3402"
+    depends_on:
+      - postgres
+    environment:
+      PORT: 3402
+    networks:
+      - mynetwork
+
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    ports:
+      - "5434:5432" 
+    environment:
+      POSTGRES_USER: todolist
+      POSTGRES_PASSWORD: todolistpass
+      POSTGRES_DB: todolist
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+
+volumes:
+  postgres_data:
